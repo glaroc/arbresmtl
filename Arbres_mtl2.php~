@@ -1,0 +1,69 @@
+<?php
+require("dbaminfo.php");
+
+function parseToXML($htmlStr) 
+{ 
+$xmlStr=str_replace('<','&lt;',$htmlStr); 
+$xmlStr=str_replace('>','&gt;',$xmlStr); 
+$xmlStr=str_replace('"','&quot;',$xmlStr); 
+$xmlStr=str_replace("'",'&#39;',$xmlStr); 
+$xmlStr=str_replace("&",'&amp;',$xmlStr); 
+return $xmlStr; 
+} 
+
+// Opens a connection to a MySQL server
+$connection=mysql_connect (localhost, $mys_username, $mys_pass);
+if (!$connection) {
+  die('Not connected : ' . mysql_error());
+}
+
+// Set the active MySQL database
+$db_selected = mysql_select_db($mys_base, $connection);
+if (!$db_selected) {
+  die ('Can\'t use db : ' . mysql_error());
+}
+
+$vars = @$_GET['s'] ;
+$vara = @$_GET['a'] ;
+
+if (isset($vars)){
+if ($vars=='all'){
+$query="SELECT essence_latin, essence_francais, essence_anglais, X_wgs as `long`, Y_wgs as lat, date_plant FROM trees WHERE Y_wgs IS NOT NULL  ORDER BY Y_wgs DESC";
+} else{
+$query = "SELECT essence_latin, essence_francais, essence_anglais, X_wgs as `long`, Y_wgs as lat, date_plant FROM trees WHERE Y_wgs IS NOT NULL AND (essence_latin LIKE \"%$vars%\" OR essence_anglais LIKE \"%$vars%\" OR essence_francais LIKE \"%$vars%\") ORDER BY Y_wgs DESC";
+}
+}else {
+if ($vara=='all'){
+$query = "SELECT essence_latin, essence_francais, essence_anglais, X_wgs as `long`, Y_wgs as lat, date_plant FROM trees WHERE Y_wgs IS NOT NULL";
+} else{
+$query = "SELECT essence_latin, essence_francais, essence_anglais, X_wgs as `long`, Y_wgs as lat, date_plant FROM trees WHERE Y_wgs IS NOT NULL AND nom_arrond LIKE \"%$vara%\" OR nom_secteur LIKE  \"%$vara%\") ORDER BY Y_wgs DESC";
+}
+}
+mysql_query("SET NAMES 'utf8'");
+$result = mysql_query($query);
+if (!$result) {
+  die('Invalid query: ' . mysql_error());
+}
+
+header("Content-type: text/xml; charset=utf-8");
+echo "<?xml version='1.0' ?>";
+// Start XML file, echo parent node
+echo '<markers>';
+
+// Iterate through the rows, printing XML nodes for each
+while ($row = @mysql_fetch_assoc($result)){
+  // ADD TO XML DOCUMENT NODE
+  echo '<marker ';
+  echo 'arbre_id="' . parseToXML($row['arbre_id']) . '" ';  
+  echo 'essence_latin="' . parseToXML($row['essence_latin']) . '" ';
+  echo 'essence_francais="' . parseToXML($row['essence_francais']) . '" ';
+  echo 'essence_anglais="' . parseToXML($row['essence_anglais']) . '" ';
+  echo 'date_plant="' . parseToXML($row['date_plant']) . '" ';
+  echo 'lat="' . parseToXML($row['lat']) . '" ';
+  echo 'long="' . parseToXML($row['long']) . '" ';
+  echo '/>';
+}
+
+// End XML file
+echo '</markers>';
+?>
