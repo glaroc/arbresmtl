@@ -6,9 +6,8 @@ global $language_content;
 $lang=$language_content->language;
 ?>
 <body onload="load('<?php echo $lang; ?>');">
-
-Les données utilisées pour cet interface proviennent du <a href="http://donnees.ville.montreal.qc.ca/fiche/arbres/" target="_blank">portail de données ouvertes de la ville de Montréal.</a><br> Le développement de cet outil a été initié par Christian Gendreau, David Shorthouse, Guillaume Larocque, Marc-André Goderre et Yoann Perrot dans le cadre de la journée des données ouvertes de Montréal 2013. 
-<div id="search" style="width:100%;height: 60px;background-color:#2d2d2d;">
+Les données utilisées pour cet interface proviennent du <a href="http://donnees.ville.montreal.qc.ca/fiche/arbres/" target="_blank">portail de données ouvertes de la ville de Montréal.</a><br> Le développement de cet outil a été initié par <a href="http://www.linkedin.com/profile/view?id=3864171&locale=en_US&trk=tyah2">Christian Gendreau (Canadensys)</a>, <a href="http://www.linkedin.com/pub/david-shorthouse/59/193/126">David Shorthouse (Canadensys)</a>, <a href="http://qcbs.ca/resources/research-professionals/research-professional-guillaume-larocque-phd/">Guillaume Larocque (CSBQ)</a>, <a href="http://www.linkedin.com/pub/marc-andr%C3%A9-goderre/28/6a3/a47">Marc-André Goderre (Centre de la géomatique du Québec) </a> et Yoann Perrot (Centre de la géomatique du Québec) dans le cadre de la journée des données ouvertes de Montréal 2013. 
+<div id="search" style="width:100%;height: 60px;background-color:#153736;">
 <table align="center" id="bamsearch"> 
 <tr><td> 
 <span style="color:white;">
@@ -19,7 +18,7 @@ echo 'Search by</span></td><td>';
 echo 'Chercher par</span></td><td>';
 }
 ?>
-  <select id="selectby">
+  <select id="selectby" style="padding-left:2px">
   <option value="an">
 <?php 
 if ($lang=='en' | isset($lang)==0){
@@ -64,7 +63,13 @@ echo 'ou filtrer par espèce';
 
 </td><tr></table>
 </div><br>
-<div id="map_canvas" style="width:100%;height:650px;"></div>
+<div style="position:relative;">
+<div style="background-image:url('/misc/icone-arbresmtl60.png');bottom:20px;right:10px;width:60px;height:60px;position:absolute;z-index:99;">
+</div>
+<div id="searchcount" style="left:80px;top:10px;width:240px;height:15px;position:absolute;z-index:99;color:black;background-color:white;opacity:0.9;font-family:verdana,arial;display:none;font-weight:bold;padding-left:10px;"></div>
+<div id="map_canvas" style="width:100%;height:650px;">
+</div>
+
 <div id="Results" style="width:850px;">
 </div>
 <script type="text/javascript">

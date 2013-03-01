@@ -7,7 +7,7 @@ function load(lang) {
       } else if (ss== '' && classsearch!='all'){
         ss=classsearch;
       }
-      ss=addslashes(ss);
+      ss=addslashes(ss.toLowerCase());
 var map;
 var layer10;
 var layer11;
@@ -21,7 +21,7 @@ if (ss == 'all'){
 layer10 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "124R5lV91b0PMMBqbeCw_zYR1BTtib_6Iw8ej4os"
+from: "12C0T4tBhUnemTKG7VnuWSiMwydiJ_IymKi7qy4k"
 },
 map: map,
 styleId: 2,
@@ -30,7 +30,7 @@ templateId: 2
 layer11 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "1Ujfo3Mv7h2RlB6P-eTcUA5rbG3XvVJ0wU3vx3eM"
+from: "1fVm7ab4QWwKacmiHrAIHj19jAlOme_CiF3RTUO8"
 },
 map: map,
 styleId: 2,
@@ -39,17 +39,18 @@ templateId: 2
 layer12 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "1Z7cZYCP8vojzbOAroHFp96GnAYUi8jpzGaM0fmI",
+from: "13_LhPq2hNFBfZSUOHiHOQCszIjWviSDLN915LL0",
 },
 map: map,
 styleId: 2,
 templateId: 2
 });
+   jQuery('#searchcount').fadeIn().text('Nombre d\'arbres trouvés: 213 919');
 }else{
 layer10 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "124R5lV91b0PMMBqbeCw_zYR1BTtib_6Iw8ej4os",
+from: "12C0T4tBhUnemTKG7VnuWSiMwydiJ_IymKi7qy4k",
 where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
 },
 map: map,
@@ -59,7 +60,7 @@ templateId: 2
 layer11 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "1Ujfo3Mv7h2RlB6P-eTcUA5rbG3XvVJ0wU3vx3eM",
+from: "1fVm7ab4QWwKacmiHrAIHj19jAlOme_CiF3RTUO8",
 where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
 },
 map: map,
@@ -69,7 +70,7 @@ templateId: 2
 layer12 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
-from: "1Z7cZYCP8vojzbOAroHFp96GnAYUi8jpzGaM0fmI",
+from: "13_LhPq2hNFBfZSUOHiHOQCszIjWviSDLN915LL0",
 where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
 },
 map: map,
@@ -77,8 +78,27 @@ styleId: 2,
 templateId: 2
 });
 
-
+jQuery.getJSON('/misc/Especes_frequence.json', function(data){
+  spcount=0;
+  jQuery.each(data.rows, function(key,value) {
+  if(value[0].replace(/'/g, "\\'").toLowerCase().indexOf(ss)!=-1){
+    spcount=spcount+parseInt(value[1]);
+  }
+});
+    jQuery('#searchcount').fadeIn().text('Nombre d\'arbres trouvés: '+spcount);
+});
 }
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+function findstr(key, array) {
+  var results = [];
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].indexOf(key) == 0) {
+      results.push(array[i]);
+    }
+  }
+  return results;
 }
 
 function bindInfoWindow(marker, map, infoWindow, html) {
