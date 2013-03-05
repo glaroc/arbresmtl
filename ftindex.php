@@ -6,38 +6,30 @@ global $language_content;
 $lang=$language_content->language;
 ?>
 <body onload="load('<?php echo $lang; ?>');">
-Les données utilisées pour cet interface proviennent du <a href="http://donnees.ville.montreal.qc.ca/fiche/arbres/" target="_blank">portail de données ouvertes de la ville de Montréal.</a><br> Le développement de cet outil a été initié par <a href="http://www.linkedin.com/profile/view?id=3864171&locale=en_US&trk=tyah2">Christian Gendreau (Canadensys)</a>, <a href="http://www.linkedin.com/pub/david-shorthouse/59/193/126">David Shorthouse (Canadensys)</a>, <a href="http://qcbs.ca/resources/research-professionals/research-professional-guillaume-larocque-phd/">Guillaume Larocque (CSBQ)</a>, <a href="http://www.linkedin.com/pub/marc-andr%C3%A9-goderre/28/6a3/a47">Marc-André Goderre (Centre de la géomatique du Québec) </a> et Yoann Perrot (Centre de la géomatique du Québec) dans le cadre de la journée des données ouvertes de Montréal 2013. 
-<div id="search" style="width:100%;height: 60px;background-color:#153736;">
-<table align="center" id="bamsearch"> 
-<tr><td> 
-<span style="color:white;">
+<div id="search" style="width:100%;height: 60px;background-color:#2c2c2c;">
+<table align="center" style="color:white;padding:0 5px 0 5px;margin:0;"> 
+<tr><td width="400px" style="color:white;padding:5px 0 5px 15px;margin:0;"> 
 <?php 
 if ($lang=='en' | isset($lang)==0){
-echo 'Search by</span></td><td>';
+echo 'Search by ';
 }else{
-echo 'Chercher par</span></td><td>';
+echo 'Chercher par ';
 }
 ?>
-  <select id="selectby" style="padding-left:2px">
-  <option value="an">
+<select id="selectby" style="padding-left:0px;">
 <?php 
 if ($lang=='en' | isset($lang)==0){
-echo 'species</option>';
+echo '<option value="en">English name</option>';
+echo '<option value="fr">French name</option>';
+echo '<option value="la">Latin name</option>';
 }else{
-echo 'espèce</option>';
+echo '<option value="fr">Nom français</option>';
+echo '<option value="en">Nom anglais</option>';
+echo '<option value="la">Nom latin</option>';
 }
 ?> 
-<!--<option value="au">
-<?php 
-if ($lang=='en' | isset($lang)==0){
-echo 'Place name</option>';
-}else{
-echo 'Nom de lieu</option>';
-}
-?>
--->
   </select>
-  <input type="text"  id="searchfield" onchange="load('<?php echo $lang; ?>');document.getElementById('searchString2').value='all';" name="s"/>
+  <input type="text"  id="searchfield" placeholder="<?php echo ($lang=='en')? 'species': 'espèce'; ?>" onchange="load('<?php echo $lang; ?>');document.getElementById('searchString2').value='all';" name="s"/>
   <input type="button" onclick="load('<?php echo $lang; ?>')" 
 <?php 
 if ($lang=='en' | isset($lang)==0){

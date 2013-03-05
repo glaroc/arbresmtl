@@ -45,13 +45,44 @@ map: map,
 styleId: 2,
 templateId: 2
 });
-   jQuery('#searchcount').fadeIn().text('Nombre d\'arbres trouvés: 213 919');
+   jQuery('#searchcount').fadeIn().text((lang=='fr'?'Nombre d\'arbres trouvés:':'Number of trees found:')+' 213 919');
+
 }else{
+  if (ss== '' && classsearch!='all'){
+  searchlang=lang;
+}else{
+  searchlang=document.getElementById('selectby').value;
+}
+  if (searchlang=='en'){
+que="essence_anglais CONTAINS IGNORING CASE \'"+ss+"\'";
+rr=1;
+}else if (searchlang=='fr'){
+que="essence_francais CONTAINS IGNORING CASE \'"+ss+"\'";
+rr=0;
+}else {
+que="essence_latin CONTAINS IGNORING CASE \'"+ss+"\'";
+rr=2;
+}
+
+jQuery.getJSON('/misc/Especes2.json', function(data){
+  spcount=0;
+  jQuery.each(data.rows, function(key,value) {
+  if(value[rr].replace(/'/g, "\\'").toLowerCase().indexOf(ss)!=-1){
+    spcount=spcount+parseInt(value[3]);
+  }
+});
+  if (lang=='en'){
+   jQuery('#searchcount').fadeIn().text('Nombre of trees found: '+spcount);
+}else{
+   jQuery('#searchcount').fadeIn().text('Nombre d\'arbres trouvés: '+spcount);
+}
+});
+
 layer10 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
 from: "12C0T4tBhUnemTKG7VnuWSiMwydiJ_IymKi7qy4k",
-where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
+where: que
 },
 map: map,
 styleId: 2,
@@ -61,7 +92,7 @@ layer11 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
 from: "1fVm7ab4QWwKacmiHrAIHj19jAlOme_CiF3RTUO8",
-where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
+where: que
 },
 map: map,
 styleId: 2,
@@ -71,21 +102,11 @@ layer12 = new google.maps.FusionTablesLayer({
 query: {
 select: "col31",
 from: "13_LhPq2hNFBfZSUOHiHOQCszIjWviSDLN915LL0",
-where: "essence_francais CONTAINS IGNORING CASE \'"+ss+"\'"
+where: que
 },
 map: map,
 styleId: 2,
 templateId: 2
-});
-
-jQuery.getJSON('/misc/Especes_frequence.json', function(data){
-  spcount=0;
-  jQuery.each(data.rows, function(key,value) {
-  if(value[0].replace(/'/g, "\\'").toLowerCase().indexOf(ss)!=-1){
-    spcount=spcount+parseInt(value[1]);
-  }
-});
-    jQuery('#searchcount').fadeIn().text('Nombre d\'arbres trouvés: '+spcount);
 });
 }
 }
@@ -156,5 +177,5 @@ function getUrlVars()
 function resetsearch()
 {
 document.getElementById('searchfield').value='';
-document.getElementById('selectby').value='an';
+document.getElementById('selectby').value=lang;
 }
