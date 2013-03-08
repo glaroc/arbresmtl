@@ -17,11 +17,19 @@ center: new google.maps.LatLng(45.550, -73.696),
 zoom: 11,
 mapTypeId: 'hybrid'
 });
+
+jQuery.getJSON('/misc/Especes_frequence.json', function(data){
+  jQuery.each(data, function(key,value) {
+  (lang=='fr')?ra=0:ra=1;
+  jQuery('#searchString2').append('<option value='+value[ra]+'>'+value[ra]+'</option>');
+});
+});
+
 if (ss == 'all'){
 layer10 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "12C0T4tBhUnemTKG7VnuWSiMwydiJ_IymKi7qy4k"
+select: "col29",
+from: "10UTiaDwvYAs1lNjt_OwVP7Z6sJMdbJdU_yug4-0"
 },
 map: map,
 styleId: 2,
@@ -29,8 +37,8 @@ templateId: 2
 });
 layer11 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "1fVm7ab4QWwKacmiHrAIHj19jAlOme_CiF3RTUO8"
+select: "col29",
+from: "1CCbQQ5D9AsABcNJxh_aFPwSH0lW2OhsPNso1_eI"
 },
 map: map,
 styleId: 2,
@@ -38,14 +46,14 @@ templateId: 2
 });
 layer12 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "13_LhPq2hNFBfZSUOHiHOQCszIjWviSDLN915LL0",
+select: "col29",
+from: "1XaRezIUnKRd_qAQ_sr-T5THaEHXnVWaHbCWDrJQ",
 },
 map: map,
 styleId: 2,
 templateId: 2
 });
-   jQuery('#searchcount').fadeIn().text((lang=='fr'?'Nombre d\'arbres trouvés:':'Number of trees found:')+' 213 919');
+   jQuery('#searchcount').fadeIn().text((lang=='fr'?'Nombre d\'arbres trouvés:':'Number of trees found:')+' 222 066');
 
 }else{
   if (ss== '' && classsearch!='all'){
@@ -64,9 +72,9 @@ que="essence_latin CONTAINS IGNORING CASE \'"+ss+"\'";
 rr=2;
 }
 
-jQuery.getJSON('/misc/Especes2.json', function(data){
+jQuery.getJSON('/misc/Especes_frequence.json', function(data){
   spcount=0;
-  jQuery.each(data.rows, function(key,value) {
+  jQuery.each(data, function(key,value) {
   if(value[rr].replace(/'/g, "\\'").toLowerCase().indexOf(ss)!=-1){
     spcount=spcount+parseInt(value[3]);
   }
@@ -80,8 +88,8 @@ jQuery.getJSON('/misc/Especes2.json', function(data){
 
 layer10 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "12C0T4tBhUnemTKG7VnuWSiMwydiJ_IymKi7qy4k",
+select: "col29",
+from: "10UTiaDwvYAs1lNjt_OwVP7Z6sJMdbJdU_yug4-0",
 where: que
 },
 map: map,
@@ -90,8 +98,8 @@ templateId: 2
 });
 layer11 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "1fVm7ab4QWwKacmiHrAIHj19jAlOme_CiF3RTUO8",
+select: "col29",
+from: "1CCbQQ5D9AsABcNJxh_aFPwSH0lW2OhsPNso1_eI",
 where: que
 },
 map: map,
@@ -100,8 +108,8 @@ templateId: 2
 });
 layer12 = new google.maps.FusionTablesLayer({
 query: {
-select: "col31",
-from: "13_LhPq2hNFBfZSUOHiHOQCszIjWviSDLN915LL0",
+select: "col29",
+from: "1XaRezIUnKRd_qAQ_sr-T5THaEHXnVWaHbCWDrJQ",
 where: que
 },
 map: map,

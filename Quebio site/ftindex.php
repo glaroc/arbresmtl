@@ -50,7 +50,7 @@ echo 'ou filtrer par espèce';
 </span>
   <select id="searchString2" onchange="load('<?php echo $lang; ?>');resetsearch();" onclick="load('<?php echo $lang; ?>')" name="s">
   <option value="all">Selectionnez...</option>
- <?php require("/var/www/quebio.ca/misc/arbres_sp_dropdown_ft.php");cl();?>
+<!-- <?php require("/var/www/quebio.ca/misc/arbres_sp_dropdown_ft.php");cl();?> -->
   </select>
 
 </td><tr></table>
